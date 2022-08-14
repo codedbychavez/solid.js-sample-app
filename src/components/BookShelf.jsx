@@ -11,13 +11,21 @@ const initialBooks = [
 
 export function BookShelf(props) {
   const [books, setBooks] = createSignal(initialBooks);
-  const totalBooks = () => books().length;
+  const [showForm, setShowForm] = createSignal(false);
+
+  const toggleForm = () => setShowForm(!showForm());
 
   return (
     <div>
       <h1>{props.name}'s Bookshelf</h1>
       <BookList books={books()} />
-      <AddBook setBooks={setBooks} />
+      <Show
+        when={showForm()}
+        fallback={<button onClick={toggleForm}>Add a book</button>}
+      >
+        <AddBook setBooks={setBooks} />
+        <button onClick={toggleForm}>Finished adding books</button>
+      </Show>
     </div>
   );
 }
